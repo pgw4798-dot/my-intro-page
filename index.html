@@ -3,68 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자기소개 페이지</title>
+    <title>정통 명리학 사주풀이</title>
     <style>
         body {
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            background-color: #f4f7f6;
+            background-color: #121620;
+            color: #e2e8f0;
             margin: 0;
-            padding: 50px 20px;
+            padding: 40px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
-        .card {
-            background-color: #ffffff;
+        .container {
+            background-color: #1e2433;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 1px solid #2d3748;
         }
         h1 {
-            color: #333333;
-            margin-bottom: 10px;
-            font-size: 24px;
+            color: #f6ad55;
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: 26px;
         }
         .subtitle {
-            color: #666666;
-            font-size: 15px;
+            text-align: center;
+            color: #a0aec0;
+            font-size: 14px;
             margin-bottom: 30px;
         }
-        .info-section {
-            text-align: left;
-            border-top: 1px solid #eeeeee;
-            padding-top: 20px;
-            margin-top: 20px;
+        .form-group {
+            margin-bottom: 20px;
         }
-        .info-item {
-            margin-bottom: 12px;
+        label {
+            display: block;
             font-size: 14px;
-            color: #444444;
+            color: #cbd5e0;
+            margin-bottom: 8px;
         }
-        .info-item span {
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #4a5568;
+            background-color: #2d3748;
+            color: #fff;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #f6ad55;
+        }
+        .btn {
+            width: 100%;
+            background: linear-gradient(135deg, #f6ad55, #dd6b20);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
             font-weight: bold;
-            color: #222222;
-            display: inline-block;
-            width: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        #result-section {
+            display: none;
+            margin-top: 30px;
+            border-top: 1px solid #2d3748;
+            padding-top: 25px;
+        }
+        .result-box {
+            background-color: #161b26;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f6ad55;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #cbd5e0;
+        }
+        .result-box h3 {
+            color: #f6ad55;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>안녕하세요! 👋</h1>
-        <div class="subtitle">IT Product Manager</div>
+    <div class="container">
+        <h1> 운명 분석관</h1>
+        <div class="subtitle">정통 명리학을 바탕으로 한 신년 사주 및 총운 풀이</div>
         
-        <div class="info-section">
-            <div class="info-item"><span>소속</span> 토스(Viva Republica)</div>
-            <div class="info-item"><span>직무</span> Product Operations / PM</div>
-            <div class="info-item"><span>관심사</span> 데이터 분석, 서비스 기획</div>
+        <div class="form-group">
+            <label for="name">성함</label>
+            <input type="text" id="name" placeholder="이름을 입력하세요">
+        </div>
+
+        <div class="form-group">
+            <label for="birth">생년월일 (양력/음력)</label>
+            <input type="date" id="birth">
+        </div>
+
+        <div class="form-group">
+            <label for="time">태어난 시간</label>
+            <select id="time">
+                <option value="unknown">모름 / 기억 안 남</option>
+                <option value="early">자시/축시 (23:00 ~ 02:59)</option>
+                <option value="morning">인시/묘시 (03:00 ~ 08:59)</option>
+                <option value="day">진시/사시/오시/미시 (09:00 ~ 16:59)</option>
+                <option value="night">신시/유시/술시/해시 (17:00 ~ 22:59)</option>
+            </select>
+        </div>
+
+        <button class="btn" onclick="showSajuResult()">사주 풀이 확인하기</button>
+
+        <div id="result-section">
+            <div class="result-box">
+                <h3 id="result-title"></h3>
+                <p id="result-desc"></p>
+            </div>
         </div>
     </div>
+
+    <script>
+        function showSajuResult() {
+            const name = document.getElementById('name').value;
+            if (!name) {
+                alert('성함을 입력해주세요!');
+                return;
+            }
+
+            // 간단한 재미용 풀이 데이터 (나중에 정통 명리 로직이나 데이터로 확장 가능!)
+            const fortunes = [
+                "올해는 숨겨진 재능이 만개하는 시기입니다. 주위의 도움으로 뜻밖의 기회를 잡게 되며, 특히 커리어와 금전운에서 큰 성취를 기대할 수 있습니다. 자만하지 않고 꾸준히 나아간다면 대운이 따릅니다.",
+                "내면의 지혜가 깊어지는 해입니다. 당장 눈앞의 성과보다는 장기적인 자산 관리와 실력 양에 집중하는 것이 유리합니다. 주변 사람들과의 인연을 소중히 하면 귀인이 나타납니다.",
+                "활동 영역이 넓어지고 새로운 도약을 맞이하는 운입니다. 새로운 프로젝트나 환경 변화에 두려움을 갖지 마세요. 과감한 결단력이 성공으로 이어지는 길입니다."
+            ];
+
+            // 이름을 바탕으로 가상의 결과 선택 (재미 요소)
+            const randomIndex = name.length % fortunes.length;
+            
+            document.getElementById('result-title').innerText = `✨ ${name}님의 총운 풀이`;
+            document.getElementById('result-desc').innerText = fortunes[randomIndex];
+            
+            document.getElementById('result-section').style.display = 'block';
+        }
+    </script>
 
 </body>
 </html>
